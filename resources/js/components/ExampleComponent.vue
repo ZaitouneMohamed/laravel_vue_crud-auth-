@@ -10,6 +10,9 @@
                         <button type="button" class="btn btn-success float-right" data-bs-toggle="modal" v-if="!logged"
                             data-bs-target="#Login">Login</button>
 
+                        <button type="button" class="btn btn-primary float-right" data-bs-toggle="modal" v-if="!logged"
+                            data-bs-target="#Register">Register</button>
+
                         <button type="button" class="btn btn-danger float-right" @click="logout"
                             v-if="logged">Logout</button>
                     </div>
@@ -28,9 +31,6 @@
                                     <a class="btn btn-danger" @click="DeleteContact(contact.id)"><i class="fa fa-trash"
                                             aria-hidden="true"></i></a>
                                 </span>
-                                <span>
-                                    <router-link :to="`/${contact.id}`">jjjj</router-link>
-                                </span>
                             </li>
                         </ul>
                     </div>
@@ -39,6 +39,7 @@
         </div>
     </div>
     <Login @logged="login" />
+    <Register/>
     <div class="modal fade" id="update" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -99,6 +100,7 @@
 import axios from 'axios';
 
 import Login from "./Login.vue";
+import Register from "./Register";
 
 export default {
     data() {
@@ -111,7 +113,8 @@ export default {
         };
     },
     components: {
-        Login
+        Login,
+        Register
     },
     mounted() {
         this.getContacts();
