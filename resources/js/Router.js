@@ -6,7 +6,7 @@ import ContactList from "./components/ExampleComponent.vue";
 const routes = [
     { path: "/:id", component: Home },
     {
-        path: "/contacts",
+        path: "/",
         component: ContactList,
         // beforeEnter: (to, from, next) => {
         //     const variableValue = JSON.parse(localStorage.getItem('token'));
