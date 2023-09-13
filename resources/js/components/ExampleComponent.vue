@@ -3,6 +3,9 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
+                    <div class="alert alert-success" v-if="success" role="alert">
+                        {{ success }}
+                    </div>
                     <div class="card-header">
                         Contacts <button type="button" class="btn btn-success float-right" data-bs-toggle="modal"
                             v-if="logged" data-bs-target="#create"><i class="fa fa-plus" aria-hidden="true"></i></button>
@@ -39,7 +42,7 @@
         </div>
     </div>
     <Login @logged="login" />
-    <Register/>
+    <Register />
     <div class="modal fade" id="update" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -108,6 +111,7 @@ export default {
             contacts: [],
             contact: { name: "", phone: "" },
             updating: false,
+            success: "",
             logged: localStorage.getItem('token') ? true : false,
             token: JSON.parse(localStorage.getItem('token')) || '',
         };
@@ -128,7 +132,6 @@ export default {
             };
             axios.get('/api/contacts', config)
                 .then((response) => this.contacts = response.data.data);
-            console.log(config)
         },
         AddContact() {
             const config = {
@@ -139,6 +142,7 @@ export default {
             axios.post('/api/contacts', this.contact, config)
                 .then((response) => {
                     this.getContacts();
+                    this.ShowMeesage(response.data.message)
                     this.contact = { name: "", phone: "" }
                 })
                 .catch(err => console.log(err))
@@ -164,6 +168,7 @@ export default {
             axios.put('/api/contacts/' + id, this.contact, config)
                 .then((response) =>
                     this.updating = false,
+                    this.ShowMeesage("contact updated successfuly"),
                     this.getContacts()
                 );
         },
@@ -185,7 +190,8 @@ export default {
                 if (result.isConfirmed) {
                     axios.delete('/api/contacts/' + id, config)
                         .then((response) =>
-                            this.getContacts()
+                            this.getContacts(),
+                            this.ShowMeesage("contact deleted successfully")
                         );
                     Swal.fire(
                         'Deleted!',
@@ -195,14 +201,23 @@ export default {
                 }
             })
         },
+        ShowMeesage(message) {
+            this.success = message
+            setInterval(() => {
+                this.success = ""
+            }, 3000);
+        },
         logout() {
             localStorage.removeItem('token'),
                 this.logged = false,
+                this.ShowMeesage("you log out successfully")
                 this.token = ''
         },
         login() {
             this.logged = true,
-                this.token = JSON.parse(localStorage.getItem('token'))
+                this.token = JSON.parse(localStorage.getItem('token')),
+                this.getContacts(),
+                this.ShowMeesage("you logged in successfully")
         }
     }
 }
