@@ -20530,7 +20530,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[3] || (_cache[3] = function () {
       return $options.Register && $options.Register.apply($options, arguments);
     })
-  }, "Login")])])])])]);
+  }, "Register")])])])])]);
 }
 
 /***/ }),
